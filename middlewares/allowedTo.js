@@ -10,3 +10,4 @@ const allowTo=(...roles)=>{
         next();
     };
 }
+module.exports = allowTo;
