@@ -25,13 +25,15 @@ const getProduct = async (req, res) => {
 
 const createProduct = async (req, res) => {
     try {
-        const newProduct = new Product(req.body);
+        const newProduct = new Product({...req.body,
+            image: req.file ? req.file.filename : null });
         await newProduct.save();
         res.status(201).json(newProduct);
     } catch (err) {
         res.status(500).json({ error: 'Internal server error' });
     }
 };
+
 
 const updateProduct = async (req, res) => {
     try {
@@ -69,3 +71,4 @@ module.exports = {
     updateProduct,
     deleteProduct
 };
+
