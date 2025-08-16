@@ -63,7 +63,7 @@ const updateProduct = async (req, res) => {
 
         const updatedProduct = await Product.findByIdAndUpdate(
             req.params.productId,
-            updatedData,
+            { $set: updatedData },
             { new: true }
         ).populate('category', 'name'); 
 
@@ -100,4 +100,5 @@ module.exports = {
     updateProduct,
     deleteProduct
 };
+
 
