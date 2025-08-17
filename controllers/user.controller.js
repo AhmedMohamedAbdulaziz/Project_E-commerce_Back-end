@@ -28,7 +28,7 @@ const register= async (req, res) => {
         password: hashedPassword,
         role: role || 'user' 
     });
-    const token = jwt.sign({ id: newUser._id }, 'JWT_SECRET_KEY', { expiresIn: '1h' });
+    const token = jwt.sign({ id: newUser._id , role: newUser.role }, 'JWT_SECRET_KEY', { expiresIn: '1h' });
     newUser.token = token;
         await newUser.save()
 
