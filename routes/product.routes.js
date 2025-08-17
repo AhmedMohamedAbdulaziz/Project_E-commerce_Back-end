@@ -14,7 +14,8 @@ router.route('/')
 
 router.route('/:productId')
     .get(productcontroller.getProduct)
-    .patch(verifyToken, allowTo('admin'),productcontroller.updateProduct)
+    .patch(verifyToken, allowTo('admin'),upload.single('image'),productcontroller.updateProduct)
     .delete(verifyToken, allowTo('admin'),productcontroller.deleteProduct);
 
 module.exports = router;
+
