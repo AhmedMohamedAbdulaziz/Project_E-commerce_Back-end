@@ -5,12 +5,12 @@ const allowTo = require("../middlewares/allowedTo");
 
 router
   .route("/")
-  .get(allowTo("admin"), categoryController.getCategories)
-  .post(allowTo("admin"), categoryController.createCategory);
+  .get(verifyToken, allowTo('admin'), categoryController.getCategories)
+  .post(verifyToken, allowTo('admin'), categoryController.createCategory);
 router
   .route("/:id")
-  .get(allowTo("admin"), categoryController.getCategoryById)
-  .put(allowTo("admin"), categoryController.updateCategory)
-  .delete(allowTo("admin"), categoryController.deleteCategory);
+  .get(verifyToken, allowTo('admin'), categoryController.getCategoryById)
+  .put(verifyToken, allowTo('admin'), categoryController.updateCategory)
+  .delete(verifyToken, allowTo('admin'), categoryController.deleteCategory);
 module.exports = router;
 // app.use('/api/categories', categoryRoutes);
