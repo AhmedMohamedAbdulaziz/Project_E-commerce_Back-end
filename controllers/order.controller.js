@@ -86,7 +86,10 @@ const getOrderbyId = async (req, res) => {
     }
 
     // Check if user is owner OR admin
-    if (req.user.role !== "admin" && order.userId._id.toString() !== req.user.id) {
+    if (
+      req.user.role !== "admin" &&
+      order.userId._id.toString() !== req.user.id
+    ) {
       return res
         .status(403)
         .json({ message: "Not authorized to get the order" });
@@ -138,7 +141,7 @@ const updateOrderStatus = async (req, res) => {
   try {
     const { orderId } = req.params;
     const { status } = req.body;
-    
+
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Admin access required" });
     }
@@ -147,7 +150,13 @@ const updateOrderStatus = async (req, res) => {
       return res.status(400).json({ message: "Status is required" });
     }
 
-    const validStatuses = ['pending', 'confirmed', 'shipped', 'delivered', 'cancelled'];
+    const validStatuses = [
+      "pending",
+      "confirmed",
+      "shipped",
+      "delivered",
+      "cancelled",
+    ];
     if (!validStatuses.includes(status)) {
       return res.status(400).json({ message: "Invalid status" });
     }
@@ -157,12 +166,11 @@ const updateOrderStatus = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (status === 'cancelled' && order.status !== 'cancelled') {
+    if (status === "cancelled" && order.status !== "cancelled") {
       for (const item of order.items) {
-        await Product.findByIdAndUpdate(
-          item.product,
-          { $inc: { stock: item.quantity } }
-        );
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: item.quantity },
+        });
       }
     }
 
@@ -170,8 +178,9 @@ const updateOrderStatus = async (req, res) => {
       orderId,
       { status },
       { new: true }
-    ).populate("userId", "FirstName LastName email")
-     .populate("items.product", "name image price");
+    )
+      .populate("userId", "FirstName LastName email")
+      .populate("items.product", "name image price");
 
     res.status(200).json({
       message: "Order status updated successfully",
@@ -209,10 +218,9 @@ const cancelOrder = async (req, res) => {
     }
 
     for (const item of order.items) {
-      await Product.findByIdAndUpdate(
-        item.product,
-        { $inc: { stock: item.quantity } }
-      );
+      await Product.findByIdAndUpdate(item.product, {
+        $inc: { stock: item.quantity },
+      });
     }
 
     order.status = "cancelled";
@@ -241,12 +249,11 @@ const deleteOrder = async (req, res) => {
       return res.status(404).json({ message: "Order not found" });
     }
 
-    if (order.status !== 'cancelled') {
+    if (order.status !== "cancelled") {
       for (const item of order.items) {
-        await Product.findByIdAndUpdate(
-          item.product,
-          { $inc: { stock: item.quantity } }
-        );
+        await Product.findByIdAndUpdate(item.product, {
+          $inc: { stock: item.quantity },
+        });
       }
     }
 

@@ -7,8 +7,18 @@ const router = express.Router();
 
 // Admin routes (admin only)
 router.get("/", verifyToken, allowedTo("admin"), orderController.getAllOrders);
-router.patch("/:orderId/status", verifyToken, allowedTo("admin"), orderController.updateOrderStatus);
-router.delete("/:orderId", verifyToken, allowedTo("admin"), orderController.deleteOrder);
+router.patch(
+  "/:orderId/status",
+  verifyToken,
+  allowedTo("admin"),
+  orderController.updateOrderStatus
+);
+router.delete(
+  "/:orderId",
+  verifyToken,
+  allowedTo("admin"),
+  orderController.deleteOrder
+);
 
 // User routes (authenticated users)
 router.post("/", verifyToken, orderController.createOrder);
