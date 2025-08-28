@@ -5,11 +5,14 @@ const productRoutes = require("./routes/product.routes");
 const categoryRoutes = require("./routes/category.routes");
 const orderRoutes = require("./routes/order.routes");
 const cors = require("cors"); 
+const path = require('path');
 
 const app = express();
 // Middleware
 app.use(cors());        
 app.use(express.json());
+app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+
 
 // Connect to DB
 connection();
