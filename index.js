@@ -4,11 +4,11 @@ const userRoutes = require("./routes/user.routes");
 const productRoutes = require("./routes/product.routes");
 const categoryRoutes = require("./routes/category.routes");
 const orderRoutes = require("./routes/order.routes");
-const cors = require("cors");
+const cors = require("cors"); 
 
 const app = express();
 // Middleware
-app.use(cors());
+app.use(cors());        
 app.use(express.json());
 
 // Connect to DB
